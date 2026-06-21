@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lumière | Premium Glassmorphism UI</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Custom Properties */
+        :root {
+            /* Typography */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Color Palette - Light & Soft Pastels */
+            --color-lavender: #E6E6FA;
+            --color-blush: #FCE4EC;
+            --color-sky: #E1F5FE;
+            --color-mint: #E0F2F1;
+            --color-white: #FFFFFF;
+            
+            --text-main: #2C3539;
+            --text-muted: #6B7280;
+            
+            /* Glassmorphism Variables */
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 8px 32px 0 rgba(100, 100, 111, 0.08);
+            --glass-blur: blur(16px);
+            
+            /* Animations */
+            --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Base Resets (Mobile First) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-main);
+            background-color: #FAFAFA;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        
+        /* Body scroll lock during loading */
+        body.loading {
+            overflow: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-main);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; border-radius: 12px; }
+
+        /* =========================================
+           LOADING SCREEN (Premium Overlay)
+           ========================================= */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #FAFAFA; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s var(--ease);
+        }
+        .loader-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+        .loader-aurora { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
+        .loader-blob { position: absolute; filter: blur(80px); opacity: 0.8; border-radius: 50%; animation: loader-pulse 8s infinite alternate var(--ease); }
+        .l-blob-1 { background: var(--color-lavender); width: 50vw; height: 50vw; top: -10%; left: -10%; }
+        .l-blob-2 { background: var(--color-blush); width: 60vw; height: 60vw; bottom: -20%; right: -10%; animation-delay: -2s; }
+        .l-blob-3 { background: var(--color-mint); width: 45vw; height: 45vw; top: 20%; right: 20%; animation-delay: -4s; }
+        .l-blob-4 { background: var(--color-sky); width: 55vw; height: 55vw; bottom: 10%; left: 10%; animation-delay: -6s; }
+
+        @keyframes loader-pulse {
+            0% { transform: scale(1) translate(0,0); }
+            100% { transform: scale(1.2) translate(10%, 10%); }
+        }
+
+        .loader-card {
+            text-align: center; padding: 4rem 3rem; min-width: 380px; max-width: 90%;
+            transition: transform 0.8s var(--spring), opacity 0.8s;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+        }
+        .loader-card.exit { transform: scale(1.1); opacity: 0; }
+
+        .shimmer-text {
+            font-size: 3rem; margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #2C3539 0%, #aaa 50%, #2C3539 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 2.5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        .typewriter {
+            font-family: var(--font-body); color: var(--text-muted); font-size: 0.95rem; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 3rem;
+            overflow: hidden; white-space: nowrap; border-right: 2px solid var(--text-muted);
+            margin: 0 auto 3rem; animation: typing 1.5s steps(30, end), blink-caret .75s step-end infinite;
+            width: fit-content;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--text-muted); } }
+
+        .spinner-container { position: relative; width: 120px; height: 120px; margin: 0 auto 3rem; }
+
+        .orbital-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; }
+        .ring-1 { border-top-color: #B39DDB; border-left-color: #F48FB1; animation: spin 2s linear infinite; }
+        .ring-2 { width: 80%; height: 80%; top: 10%; left: 10%; border-bottom-color: #80CBC4; border-right-color: #81D4FA; animation: spin-reverse 3s linear infinite; }
+        .ring-3 { width: 60%; height: 60%; top: 20%; left: 20%; border-top-color: #9E9E9E; animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+
+        .pulse-ring { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--color-lavender); opacity: 0; animation: sonar 2s ease-out infinite; }
+        .pr-2 { animation-delay: 1s; }
+        @keyframes sonar {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .particles { position: absolute; width: 100%; height: 100%; animation: spin 10s linear infinite; }
+        .particle { position: absolute; width: 6px; height: 6px; background: white; border-radius: 50%; box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+        .p1 { top: -3px; left: 50%; transform: translateX(-50%); }
+        .p2 { bottom: -3px; left: 50%; transform: translateX(-50%); }
+        .p3 { left: -3px; top: 50%; transform: translateY(-50%); }
+        .p4 { right: -3px; top: 50%; transform: translateY(-50%); }
+        .p5 { top: 15%; left: 15%; }
+        .p6 { bottom: 15%; right: 15%; }
+        .p7 { top: 15%; right: 15%; }
+        .p8 { bottom: 15%; left: 15%; }
+        .p9 { top: 5%; left: 30%; }
+        .p10 { bottom: 5%; right: 30%; }
+        .p11 { top: 30%; right: 5%; }
+        .p12 { bottom: 30%; left: 5%; }
+
+        .loader-status { position: relative; }
+        #loader-message { font-size: 0.95rem; font-weight: 500; margin-bottom: 1rem; height: 1.5rem; transition: opacity 0.3s; color: var(--text-main); }
+        .progress-wrap { width: 100%; height: 4px; background: rgba(0,0,0,0.05); border-radius: 2px; margin-bottom: 0.8rem; overflow: hidden; }
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #B39DDB, #F48FB1, #81D4FA); transition: width 0.1s linear; }
+        .percentage { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+        .skip-btn {
+            position: absolute; bottom: 2.5rem; right: 2.5rem;
+            padding: 0.6rem 1.8rem; background: transparent; border: 1px solid var(--text-muted);
+            color: var(--text-muted); border-radius: 30px; font-size: 0.9rem; cursor: pointer;
+            opacity: 0; pointer-events: none; transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+        }
+        .skip-btn.show { opacity: 0.5; pointer-events: auto; }
+        .skip-btn:hover { opacity: 1; background: rgba(0,0,0,0.05); }
+
+        /* =========================================
+           MAIN PAGE STYLES
+           ========================================= */
+
+        /* Aurora Background Main */
+        .aurora-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #FAFAFA;
+        }
+        .aurora-blob-main {
+            position: absolute;
+            filter: blur(90px);
+            opacity: 0.6;
+            border-radius: 50%;
+            animation: pulse-blob 12s infinite alternate var(--ease);
+            will-change: transform, opacity;
+        }
+
+        .blob-m1 { background: var(--color-blush); width: 60vw; height: 60vw; top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-m2 { background: var(--color-lavender); width: 50vw; height: 50vw; top: 40%; right: -10%; animation-delay: 2s; }
+        .blob-m3 { background: var(--color-sky); width: 70vw; height: 70vw; bottom: -20%; left: 20%; animation-delay: 4s; }
+
+        /* Glass Utility Class */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px;
+            padding: 2rem;
+        }
+
+        /* Common Section Layout */
+        section {
+            padding: 4rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Buttons & Animations */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            min-height: 44px; /* Touch target size */
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+            border: 1px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Hover Shimmer */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -150%;
+            width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+            transform: skewX(-20deg);
+            z-index: -1;
+            transition: none;
+        }
+        .btn:hover::before {
+            left: 150%;
+            transition: left 0.6s var(--ease);
+        }
+
+        /* Hover Scale & Shadow */
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+
+        /* Focus Gradient Border Pulse */
+        .btn:focus {
+            outline: none;
+            animation: border-pulse 1.5s infinite;
+        }
+        @keyframes border-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(230, 230, 250, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(230, 230, 250, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 230, 250, 0); }
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 1rem; left: 1.5rem; right: 1.5rem;
+            z-index: 1000;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 30px;
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+
+        .logo { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; }
+        
+        .nav-links { display: none; gap: 2rem; align-items: center; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; opacity: 0.8; transition: opacity 0.3s; }
+        .nav-links a:hover { opacity: 1; }
+        
+        .hamburger {
+            display: flex; flex-direction: column; gap: 5px; cursor: pointer;
+            min-height: 44px; min-width: 44px; justify-content: center; align-items: center;
+        }
+        .hamburger div { width: 24px; height: 2px; background: var(--text-main); transition: 0.3s; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 6rem;
+        }
+        
+        /* Hero Load Animation */
+        .hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-text.visible {
+            animation: fade-up 1.2s var(--ease) forwards;
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; }
+        .hero h1 span { font-style: italic; color: #b76e79; }
+        .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; }
+        
+        .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+        
+        .hero-image-wrap {
+            margin-top: 3rem;
+            animation: float-mockup 6s infinite alternate var(--ease);
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes float-mockup {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+        
+        @keyframes fade-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Trusted By */
+        .trusted {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s var(--ease);
+        }
+        .trusted.visible { opacity: 1; }
+        .trusted p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 1.5rem; }
+        .logo-strip {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;
+            font-family: var(--font-heading); font-size: 1.5rem; color: #999; font-style: italic;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        /* Alternating Flip Animations */
+        .flip-card {
+            opacity: 0;
+            transition: transform 1s var(--ease), opacity 1s var(--ease);
+        }
+        .flip-left { transform: perspective(1000px) rotateY(-45deg) translateX(-50px); }
+        .flip-right { transform: perspective(1000px) rotateY(45deg) translateX(50px); }
+        .flip-center { transform: perspective(1000px) rotateX(-45deg) translateY(50px); }
+        
+        .flip-card.visible {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translate(0);
+        }
+
+        .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: inline-block; }
+        .feature-item h3 { margin-bottom: 0.8rem; font-size: 1.4rem; }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .product-card {
+            text-align: center;
+            padding: 1.5rem;
+            /* Zoom Bounce Animation */
+            opacity: 0;
+            transform: scale(0.8);
+            transition: transform 0.8s var(--spring), opacity 0.8s ease;
+        }
+        .product-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .product-img {
+            width: 100%; height: 250px; object-fit: cover; margin-bottom: 1.5rem;
+            border-radius: 16px; transition: transform 0.4s var(--ease);
+        }
+        .product-card:hover .product-img { transform: scale(1.05); }
+        .product-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; font-family: var(--font-body); font-weight: 600; }
+        .product-card .price { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        
+        /* How It Works - Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .timeline-line-wrap {
+            position: absolute; left: 20px; top: 0; bottom: 0; width: 4px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 4px;
+        }
+        .timeline-line-fill {
+            width: 100%; background: var(--color-lavender); height: 0;
+            border-radius: 4px; transition: height 2s var(--ease);
+        }
+        .timeline-line-fill.visible { height: 100%; }
+        
+        .timeline-step {
+            position: relative; padding-left: 50px; margin-bottom: 3rem;
+            opacity: 0; transform: translateX(30px); transition: all 0.8s var(--ease);
+        }
+        .timeline-step.visible { opacity: 1; transform: translateX(0); }
+        
+        .step-dot {
+            position: absolute; left: 0; top: 0; width: 44px; height: 44px;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 2px solid white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-family: var(--font-heading); font-size: 1.2rem;
+            z-index: 2; box-shadow: var(--glass-shadow);
+        }
+
+        /* Testimonials */
+        .testimonials-wrapper {
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+        .test-grid {
+            display: grid; grid-template-columns: 1fr; gap: 2rem;
+        }
+        
+        .test-card {
+            opacity: 0;
+            transition: transform 1s var(--ease), opacity 1s ease;
+        }
+        .slide-in-left { transform: translateX(-100px); }
+        .slide-in-right { transform: translateX(100px); }
+        .test-card.visible { opacity: 1; transform: translateX(0); }
+        
+        .test-card p { font-style: italic; font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .test-user { display: flex; align-items: center; gap: 1rem; }
+        .test-user img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .stars { color: #FFD700; letter-spacing: 2px; margin-bottom: 1rem; font-size: 0.9rem; }
+
+        /* Stats Counter */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; text-align: center;
+        }
+        .stat-item h3 { font-size: 3rem; margin-bottom: 0.5rem; color: var(--text-main); }
+        .stat-item p { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* CTA Banner */
+        .cta-banner {
+            text-align: center;
+            padding: 5rem 2rem;
+            margin: 4rem auto;
+            max-width: 1000px;
+            /* Pulse Glow Animation */
+            opacity: 0; transform: scale(0.95);
+            transition: all 1s var(--ease);
+        }
+        .cta-banner.visible {
+            opacity: 1; transform: scale(1);
+            animation: cta-pulse 3s infinite alternate var(--ease);
+        }
+        @keyframes cta-pulse {
+            from { box-shadow: 0 0 20px rgba(252, 228, 236, 0.5); }
+            to { box-shadow: 0 0 50px rgba(224, 242, 241, 0.8); }
+        }
+        .cta-banner h2 { font-size: 3rem; margin-bottom: 1.5rem; }
+
+        /* Footer */
+        footer {
+            padding: 4rem 1.5rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: var(--glass-blur);
+        }
+        .footer-content { display: grid; grid-template-columns: 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; text-align: left; }
+        .footer-col h4 { margin-bottom: 1.5rem; font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; }
+        .footer-col li { margin-bottom: 0.8rem; }
+        .footer-col a { color: var(--text-muted); transition: 0.3s; }
+        .footer-col a:hover { color: var(--text-main); }
+        
+        .newsletter-input {
+            display: flex; gap: 10px; margin-top: 1rem;
+        }
+        .newsletter-input input {
+            padding: 0.8rem 1.2rem; border-radius: 30px; border: 1px solid var(--glass-border);
+            background: var(--glass-bg); width: 100%; outline: none; font-family: var(--font-body);
+        }
+        
+        .footer-bottom { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Media Queries - Mobile First Approach */
+        @media (min-width: 768px) {
+            h1 { font-size: 4.5rem; }
+            h2 { font-size: 3rem; }
+            
+            .hero { flex-direction: row; align-items: center; justify-content: space-between; padding-top: 8rem; }
+            .hero-text { width: 50%; }
+            .hero-image-wrap { width: 45%; margin-top: 0; }
+            
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .test-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1.5fr; }
+
+            /* Timeline Adjustments */
+            .timeline-line-wrap { left: 50%; transform: translateX(-50%); }
+            .timeline-step { display: flex; justify-content: space-between; align-items: center; padding-left: 0; }
+            .timeline-step:nth-child(even) { flex-direction: row-reverse; }
+            .timeline-step .step-content { width: 45%; }
+            .step-dot { left: 50%; transform: translate(-50%, 0); }
+        }
+
+        @media (min-width: 1024px) {
+            .navbar { padding: 1rem 2.5rem; }
+            .hamburger { display: none; }
+            .nav-links { display: flex; }
+            
+            .hero h1 { font-size: 5rem; }
+            .products-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body class="loading">
+
+    <!-- Premium Animated Loading Screen -->
+    <div id="loader-overlay" class="loader-overlay">
+        <!-- Aurora background blobs for loader -->
+        <div class="loader-aurora">
+            <div class="loader-blob l-blob-1"></div>
+            <div class="loader-blob l-blob-2"></div>
+            <div class="loader-blob l-blob-3"></div>
+            <div class="loader-blob l-blob-4"></div>
+        </div>
+        
+        <div class="loader-card" id="loader-card">
+            <h1 class="shimmer-text">Lumière</h1>
+            <p class="typewriter">Premium Skincare & Beauty</p>
+            
+            <!-- Spinner Container -->
+            <div class="spinner-container">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring pr-2"></div>
+                
+                <div class="orbital-ring ring-1"></div>
+                <div class="orbital-ring ring-2"></div>
+                <div class="orbital-ring ring-3"></div>
+                
+                <!-- Orbiting Particles -->
+                <div class="particles">
+                    <div class="particle p1"></div><div class="particle p2"></div>
+                    <div class="particle p3"></div><div class="particle p4"></div>
+                    <div class="particle p5"></div><div class="particle p6"></div>
+                    <div class="particle p7"></div><div class="particle p8"></div>
+                    <div class="particle p9"></div><div class="particle p10"></div>
+                    <div class="particle p11"></div><div class="particle p12"></div>
+                </div>
+            </div>
+            
+            <!-- Status & Progress -->
+            <div class="loader-status">
+                <p id="loader-message">Crafting your experience...</p>
+                <div class="progress-wrap">
+                    <div class="progress-bar" id="loader-progress"></div>
+                </div>
+                <p class="percentage"><span id="loader-percent">0</span>%</p>
+            </div>
+        </div>
+        
+        <button id="skip-loader" class="skip-btn">Skip Animation</button>
+    </div>
+
+    <!-- Main Content -->
+    
+    <!-- Aurora Background Main -->
+    <div class="aurora-bg">
+        <div class="aurora-blob-main blob-m1"></div>
+        <div class="aurora-blob-main blob-m2"></div>
+        <div class="aurora-blob-main blob-m3"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar glass-card">
+        <a href="#" class="logo">Lumière</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#features">Philosophy</a>
+            <a href="#products">Collection</a>
+            <a href="#testimonials">Reviews</a>
+            <a href="#contact" class="btn btn-primary" style="min-height: auto; padding: 0.5rem 1.5rem; font-size: 0.9rem;">Shop Now</a>
+        </div>
+        <div class="hamburger">
+            <div></div><div></div><div></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Reveal Your<br><span>Natural Glow.</span></h1>
+            <p>Premium, ethically sourced skincare that celebrates your skin. Lightweight formulas wrapped in luxury aesthetics.</p>
+            <div class="hero-ctas">
+                <button class="btn btn-primary">Explore Collection</button>
+                <button class="btn">Our Philosophy</button>
+            </div>
+        </div>
+        <div class="hero-image-wrap">
+            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Premium Skincare Product" class="glass-card" style="padding: 10px;">
+        </div>
+    </section>
+
+    <!-- Trusted By -->
+    <section class="trusted obs-target">
+        <p>Featured In</p>
+        <div class="logo-strip">
+            <span>VOGUE</span>
+            <span>Allure</span>
+            <span>ELLE</span>
+            <span>Harper's BAZAAR</span>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="section-header">
+            <h2>The Lumière Difference</h2>
+            <p>Why our community trusts us with their daily rituals.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item glass-card flip-card flip-left obs-target">
+                <span class="feature-icon">✨</span>
+                <h3>Clean Ingredients</h3>
+                <p>Formulated without parabens, sulfates, or artificial fragrances. Pure goodness for your skin.</p>
+            </div>
+            <div class="feature-item glass-card flip-card flip-center obs-target">
+                <span class="feature-icon">🌿</span>
+                <h3>Cruelty-Free</h3>
+                <p>We love animals. Our products are never tested on animals and are 100% vegan certified.</p>
+            </div>
+            <div class="feature-item glass-card flip-card flip-right obs-target">
+                <span class="feature-icon">💧</span>
+                <h3>Deep Hydration</h3>
+                <p>Infused with hyaluronic acid and botanical extracts to lock in moisture for 48 hours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products">
+        <div class="section-header">
+            <h2>Curated Essentials</h2>
+            <p>Elevate your everyday routine.</p>
+        </div>
+        <div class="products-grid">
+            <div class="product-card glass-card obs-target zoom-bounce">
+                <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Rose Serum" class="product-img">
+                <h3>Rose Water Serum</h3>
+                <p class="price">$48.00</p>
+                <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+            </div>
+            <div class="product-card glass-card obs-target zoom-bounce" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Night Cream" class="product-img">
+                <h3>Midnight Repair Cream</h3>
+                <p class="price">$65.00</p>
+                <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+            </div>
+            <div class="product-card glass-card obs-target zoom-bounce" style="transition-delay: 0.2s;">
+                <div style="position: relative; width: 100%; height: 250px; margin-bottom: 1.5rem;">
+                    <img src="https://images.unsplash.com/photo-1599305090598-fe179d501227?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cleanser" class="product-img" style="position: absolute; top: 0; left: 0; height: 100%;">
+                </div>
+                <h3>Gentle Oat Cleanser</h3>
+                <p class="price">$32.00</p>
+                <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+            </div>
+            <div class="product-card glass-card obs-target zoom-bounce" style="transition-delay: 0.3s;">
+                <img src="https://images.unsplash.com/photo-1590156546946-cb55b8c8b14b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Face Oil" class="product-img">
+                <h3>Botanical Face Oil</h3>
+                <p class="price">$55.00</p>
+                <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Timeline -->
+    <section>
+        <div class="section-header">
+            <h2>Your New Ritual</h2>
+            <p>Three simple steps to radiant skin.</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-line-wrap">
+                <div class="timeline-line-fill" id="timeline-line"></div>
+            </div>
+            
+            <div class="timeline-step obs-target" data-delay="0">
+                <div class="step-dot">1</div>
+                <div class="step-content glass-card">
+                    <h3>Cleanse & Purify</h3>
+                    <p>Start with a clean canvas. Our gentle formulas wash away impurities without stripping your natural moisture barrier.</p>
+                </div>
+            </div>
+            <div class="timeline-step obs-target" data-delay="0.2">
+                <div class="step-dot">2</div>
+                <div class="step-content glass-card">
+                    <h3>Treat & Nourish</h3>
+                    <p>Apply concentrated serums to target specific concerns, delivering potent vitamins deep into the epidermis.</p>
+                </div>
+            </div>
+            <div class="timeline-step obs-target" data-delay="0.4">
+                <div class="step-dot">3</div>
+                <div class="step-content glass-card">
+                    <h3>Seal & Protect</h3>
+                    <p>Lock in hydration with our rich creams, creating a protective shield against environmental stressors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials-wrapper">
+        <div class="section-header">
+            <h2>Love Notes</h2>
+            <p>From our glowing community.</p>
+        </div>
+        <div class="test-grid">
+            <div class="test-card glass-card slide-in-left obs-target">
+                <div class="stars">★★★★★</div>
+                <p>"This serum completely transformed my skin texture in just two weeks. It's lightweight and feels incredibly luxurious."</p>
+                <div class="test-user">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="User Avatar">
+                    <div>
+                        <h4>Elena M.</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Verified Buyer</span>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card glass-card slide-in-right obs-target">
+                <div class="stars">★★★★★</div>
+                <p>"I've finally found a brand that aligns with my values. Clean ingredients, beautiful packaging, and real results."</p>
+                <div class="test-user">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="User Avatar">
+                    <div>
+                        <h4>Sophie T.</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Verified Buyer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section>
+        <div class="stats-grid glass-card">
+            <div class="stat-item">
+                <h3 class="counter" data-target="50000">0</h3>
+                <p>Happy Customers</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="counter" data-target="24">0</h3>
+                <p>Premium Products</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="counter" data-target="15">0</h3>
+                <p>Countries Served</p>
+            </div>
+            <div class="stat-item">
+                <h3 class="counter" data-target="4.9">0</h3>
+                <p>Average Rating</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section>
+        <div class="cta-banner glass-card obs-target pulse-glow">
+            <h2>Ready for your glow up?</h2>
+            <p style="margin-bottom: 2rem; font-size: 1.1rem;">Join Lumière today and get 20% off your first luxury set.</p>
+            <button class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">Unlock Offer</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 1rem;">Lumière</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Illuminating your natural beauty through science and nature.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">Skincare</a></li>
+                    <li><a href="#">Body Care</a></li>
+                    <li><a href="#">Sets & Gifts</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Ingredients</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Journal</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Subscribe</h4>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Insider access to new launches & tips.</p>
+                <div class="newsletter-input">
+                    <input type="email" placeholder="Email address">
+                    <button class="btn">Join</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Lumière Beauty. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts for Animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* =========================================
+               LOADER LOGIC
+               ========================================= */
+            const messages = [
+                "Crafting your experience...",
+                "Loading premium assets...",
+                "Almost there...",
+                "Polishing the details...",
+                "Welcome to luxury..."
+            ];
+            let msgIndex = 0;
+            const msgElement = document.getElementById('loader-message');
+            
+            // Rotate messages
+            const msgInterval = setInterval(() => {
+                msgElement.style.opacity = 0;
+                setTimeout(() => {
+                    msgIndex = (msgIndex + 1) % messages.length;
+                    msgElement.innerText = messages[msgIndex];
+                    msgElement.style.opacity = 1;
+                }, 150);
+            }, 800);
+
+            // Show skip button after 1.5s
+            const skipBtn = document.getElementById('skip-loader');
+            setTimeout(() => {
+                skipBtn.classList.add('show');
+            }, 1500);
+
+            const progressBar = document.getElementById('loader-progress');
+            const percentText = document.getElementById('loader-percent');
+            const minLoadTime = 3500; // 3.5 seconds minimum
+            const startTime = Date.now();
+            let isSkipped = false;
+            let isFullyLoaded = false;
+            let progressInterval;
+
+            // Handle window load
+            window.addEventListener('load', () => {
+                isFullyLoaded = true;
+            });
+
+            const exitLoader = () => {
+                clearInterval(msgInterval);
+                clearInterval(progressInterval);
+                
+                progressBar.style.width = '100%';
+                percentText.innerText = '100';
+                msgElement.innerText = "Welcome to luxury...";
+                msgElement.style.opacity = 1;
+                
+                setTimeout(() => {
+                    document.getElementById('loader-card').classList.add('exit');
+                    skipBtn.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        const overlay = document.getElementById('loader-overlay');
+                        overlay.classList.add('fade-out');
+                        document.body.classList.remove('loading');
+                        
+                        // Trigger hero animation
+                        document.querySelector('.hero-text').classList.add('visible');
+                        
+                        setTimeout(() => overlay.remove(), 800);
+                    }, 400); // Overlay fades after card scales up
+                }, 300); // Pause at 100%
+            };
+
+            skipBtn.addEventListener('click', () => {
+                isSkipped = true;
+                exitLoader();
+            });
+
+            // Progress Bar Animation
+            const updateProgress = () => {
+                if (isSkipped) return;
+                
+                const elapsed = Date.now() - startTime;
+                let percent = (elapsed / minLoadTime) * 100;
+                
+                if (percent >= 100) {
+                    if (isFullyLoaded || document.readyState === 'complete') {
+                        percent = 100;
+                        exitLoader();
+                        return; // Stop interval logic
+                    } else {
+                        percent = 99; // Hold at 99% if page hasn't finished loading
+                    }
+                }
+                
+                progressBar.style.width = `${percent}%`;
+                percentText.innerText = Math.floor(percent);
+            };
+
+            progressInterval = setInterval(updateProgress, 30);
+
+
+            /* =========================================
+               MAIN PAGE INTERACTIONS
+               ========================================= */
+
+            // 1. Button Ripple Effect
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+
+            // 2. Intersection Observer Setup
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        
+                        // Add visible class to trigger CSS transitions
+                        target.classList.add('visible');
+                        
+                        // Handle staggered timeline items
+                        if (target.classList.contains('timeline-step')) {
+                            const delay = target.getAttribute('data-delay') || 0;
+                            target.style.transitionDelay = `${delay}s`;
+                        }
+
+                        // Trigger Timeline Line specifically
+                        if (target.classList.contains('timeline-step') && target.getAttribute('data-delay') == '0') {
+                            document.getElementById('timeline-line').classList.add('visible');
+                        }
+                        
+                        obs.unobserve(target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe standard targets
+            document.querySelectorAll('.obs-target').forEach(el => observer.observe(el));
+
+            // 3. Number Counter Animation (Triggered separately when stats grid is in view)
+            const statsSection = document.querySelector('.stats-grid');
+            if (statsSection) {
+                const statsObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        const counters = document.querySelectorAll('.counter');
+                        counters.forEach(counter => {
+                            const target = parseFloat(counter.getAttribute('data-target'));
+                            const duration = 2000; // ms
+                            const stepTime = 20; 
+                            const steps = duration / stepTime;
+                            const inc = target / steps;
+                            let current = 0;
+                            
+                            const updateCounter = setInterval(() => {
+                                current += inc;
+                                if (current >= target) {
+                                    counter.innerText = target % 1 === 0 ? target : target.toFixed(1);
+                                    clearInterval(updateCounter);
+                                } else {
+                                    counter.innerText = target % 1 === 0 ? Math.floor(current) : current.toFixed(1);
+                                }
+                            }, stepTime);
+                        });
+                        statsObserver.unobserve(statsSection);
+                    }
+                }, { threshold: 0.5 });
+                
+                statsObserver.observe(statsSection);
+            }
+        });
+    </script>
+</body>
+</html>
