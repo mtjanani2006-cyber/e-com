@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Teko:wght@500;700&family=Margarine&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* CSS Custom Properties */
@@ -641,10 +642,67 @@
         .pa-bubble::before { content: ''; position: absolute; bottom: -23px; left: 15px; border-width: 22px 22px 0 0; border-style: solid; border-color: #111 transparent transparent transparent; z-index: 1; }
         .pa-card:hover .pa-bubble { transform: scale(1) rotate(15deg); }
 
+        /* =========================================
+           THEME: TROPICAL SURF SHOP
+           ========================================= */
+        .theme-tropical {
+            font-family: 'Quicksand', sans-serif;
+            background: #E0F2F1; /* Soft Mint */
+            color: #004D40;
+            position: relative;
+            overflow: hidden;
+            border-top: 10px solid #FFCDD2; /* Soft Coral */
+        }
+        .theme-tropical h1, .theme-tropical h2, .theme-tropical h3 { font-family: 'Fredoka One', cursive; color: #FF7043; letter-spacing: 1px; font-weight: normal; }
+        
+        .ts-hero { padding: 120px 20px; text-align: center; background: radial-gradient(circle at bottom, #FFF9C4, transparent 70%); position: relative; overflow: hidden; }
+        .ts-hero::before { content: ''; position: absolute; bottom: -50px; left: 0; width: 100%; height: 150px; background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%234DD0E1" fill-opacity="1" d="M0,160L48,170.7C96,181,192,203,288,186.7C384,171,480,117,576,117.3C672,117,768,171,864,186.7C960,203,1056,181,1152,160C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom; background-size: cover; z-index: 0; }
+        .ts-hero-content { position: relative; z-index: 10; }
+        .ts-hero h2 { font-size: 5rem; color: #00BCD4; text-shadow: 3px 3px 0px #FFF; margin-bottom: 20px; }
+        .ts-btn { display: inline-block; padding: 15px 45px; font-family: 'Fredoka One', cursive; background: #FF7043; color: #FFF; border: none; border-radius: 50px; font-size: 1.5rem; text-decoration: none; box-shadow: 0 10px 20px rgba(255,112,67,0.3); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-top: 30px; }
+        .ts-btn:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 30px rgba(255,112,67,0.4); background: #FF5722; }
+        
+        .ts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; padding: 100px 40px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+        .ts-card { background: #FFF; padding: 25px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,188,212,0.15); transition: 0.4s; text-align: center; }
+        .ts-card:hover { transform: translateY(-15px) rotate(2deg); box-shadow: 0 30px 50px rgba(0,188,212,0.25); }
+        .ts-card img { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; animation: ts-float 6s ease-in-out infinite alternate; }
+        .ts-card:nth-child(even) img { animation-delay: -3s; }
+        @keyframes ts-float { 0% { transform: translateY(0px); } 100% { transform: translateY(-15px); } }
+        .ts-card h3 { font-size: 2rem; margin-bottom: 10px; color: #00BCD4; }
+        .ts-card .price { font-size: 1.8rem; font-weight: 700; color: #FF7043; margin-bottom: 20px; }
+
+        /* =========================================
+           THEME: SWEET TOOTH CANDY
+           ========================================= */
+        .theme-candy {
+            font-family: 'Nunito', sans-serif;
+            background: #FCE4EC; /* Light Pink */
+            color: #880E4F;
+            border-top: 15px dashed #FF80AB;
+            position: relative;
+            z-index: 10;
+        }
+        .theme-candy h1, .theme-candy h2, .theme-candy h3 { font-family: 'Nunito', sans-serif; font-weight: 900; }
+        
+        .cd-hero { padding: 140px 20px; text-align: center; background: radial-gradient(circle at center, #FFF, #FCE4EC 60%); position: relative; overflow: hidden; }
+        .cd-hero h2 { font-size: 6rem; color: #E91E63; text-shadow: 4px 4px 0px #FFCDD2; margin-bottom: 20px; letter-spacing: -2px; }
+        .cd-hero p { font-size: 2.2rem; color: #BA68C8; font-weight: 700; background: #FFF; display: inline-block; padding: 10px 30px; border-radius: 50px; box-shadow: 0 10px 20px rgba(233,30,99,0.1); }
+        .cd-btn { background: linear-gradient(45deg, #00BCD4, #81D4FA); color: #FFF; padding: 18px 50px; font-size: 1.8rem; font-weight: 900; text-decoration: none; display: inline-block; border-radius: 50px; margin-top: 40px; box-shadow: 0 15px 30px rgba(0,188,212,0.3); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .cd-btn:hover { transform: scale(1.1); box-shadow: 0 20px 40px rgba(0,188,212,0.4); background: linear-gradient(45deg, #00ACC1, #4FC3F7); }
+        
+        .cd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px; padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+        .cd-card { background: #FFF; padding: 30px; border-radius: 40px; box-shadow: 0 20px 50px rgba(233,30,99,0.1); text-align: center; position: relative; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 4px solid #F8BBD0; }
+        .cd-card:hover { transform: translateY(-20px) scale(1.05); box-shadow: 0 30px 60px rgba(233,30,99,0.2); border-color: #00BCD4; }
+        .cd-card img { width: 220px; height: 220px; object-fit: cover; border-radius: 50%; margin: 0 auto 20px; display: block; border: 8px solid #FCE4EC; transition: 0.5s; }
+        .cd-card:hover img { transform: rotate(15deg) scale(1.1); border-color: #E1F5FE; }
+        .cd-card h3 { font-size: 2.4rem; color: #E91E63; margin-bottom: 10px; }
+        .cd-card .price { font-size: 2.2rem; color: #00BCD4; font-weight: 900; margin-bottom: 20px; }
+
         @media (max-width: 768px) {
-            .lt-hero-title, .pa-hero h2 { font-size: 3.5rem; }
-            .pa-hero p { font-size: 1.5rem; }
-            .lt-grid, .pa-grid { padding: 50px 20px; }
+            .lt-hero-title, .pa-hero h2, .ts-hero h2, .cd-hero h2 { font-size: 3.5rem; }
+            .pa-hero p, .cd-hero p { font-size: 1.5rem; }
+            .lt-grid, .pa-grid, .ts-grid, .cd-grid { padding: 50px 20px; }
+            .ts-hero::before { height: 80px; bottom: -20px; }
         }
     </style>
 </head>
@@ -973,6 +1031,73 @@
                 <img src="https://images.unsplash.com/photo-1513094735237-8f2714d57c13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fashion">
                 <h3>Vinyl Tote Bag</h3>
                 <div class="price">$45</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         SECTION 4: TROPICAL SURF & SWIM
+         ========================================= -->
+    <div class="theme-tropical">
+        <div class="ts-hero">
+            <div class="ts-hero-content">
+                <h2>CATCH THE WAVE</h2>
+                <p style="font-size: 1.8rem; font-weight: 600; color: #004D40;">Premium beachwear for endless summers.</p>
+                <a href="#" class="ts-btn">Shop Summer &rarr;</a>
+            </div>
+        </div>
+        
+        <div class="ts-grid">
+            <div class="ts-card obs-target slide-in-left">
+                <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Surfboard">
+                <h3>Ocean Board</h3>
+                <div class="price">$450</div>
+                <a href="#" class="ts-btn" style="padding: 10px 30px; font-size: 1.2rem; display: block; margin-top: 10px;">Grab It</a>
+            </div>
+            <div class="ts-card obs-target zoom-bounce">
+                <img src="https://images.unsplash.com/photo-1560365163-3e8d64e762ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sunnies">
+                <h3>Retro Sunnies</h3>
+                <div class="price">$55</div>
+                <a href="#" class="ts-btn" style="padding: 10px 30px; font-size: 1.2rem; display: block; margin-top: 10px;">Grab It</a>
+            </div>
+            <div class="ts-card obs-target slide-in-right">
+                <img src="https://images.unsplash.com/photo-1520639888713-7851133b1ed0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Swimwear">
+                <h3>Coral Swimsuit</h3>
+                <div class="price">$80</div>
+                <a href="#" class="ts-btn" style="padding: 10px 30px; font-size: 1.2rem; display: block; margin-top: 10px;">Grab It</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         SECTION 5: SWEET TOOTH CANDY
+         ========================================= -->
+    <div class="theme-candy">
+        <div class="cd-hero">
+            <h2>SWEET TOOTH</h2>
+            <p>Treat yourself to something magical!</p>
+            <br>
+            <a href="#" class="cd-btn">Taste the Magic</a>
+        </div>
+        
+        <div class="cd-grid">
+            <div class="cd-card obs-target zoom-bounce">
+                <img src="https://images.unsplash.com/photo-1574880529810-7e3f88eb22fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Macarons">
+                <h3>Pastel Macarons</h3>
+                <div class="price">$24</div>
+                <a href="#" class="cd-btn" style="padding: 12px 30px; font-size: 1.4rem; display: block; margin-top: 10px;">Yum!</a>
+            </div>
+            <div class="cd-card obs-target zoom-bounce" style="transition-delay: 0.2s">
+                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb93819b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cupcake">
+                <h3>Fairy Cupcake</h3>
+                <div class="price">$6</div>
+                <a href="#" class="cd-btn" style="padding: 12px 30px; font-size: 1.4rem; display: block; margin-top: 10px;">Yum!</a>
+            </div>
+            <div class="cd-card obs-target zoom-bounce" style="transition-delay: 0.4s">
+                <img src="https://images.unsplash.com/photo-1582560424564-88484606f152?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Lollipop">
+                <h3>Swirl Lollipop</h3>
+                <div class="price">$4</div>
+                <a href="#" class="cd-btn" style="padding: 12px 30px; font-size: 1.4rem; display: block; margin-top: 10px;">Yum!</a>
             </div>
         </div>
     </div>
